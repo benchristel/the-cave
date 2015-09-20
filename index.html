@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>The Cave</title>
+
+  <style type="text/css">
+    body, html {
+        background-color: #000;
+        padding: 0;
+        margin: 0;
+        color: #aaa;
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 40px;
+        color: #ddd;
+    }
+
+    p {
+        margin-bottom: 2px;
+        margin-top: 2px;
+        margin-left: 20px;
+    }
+
+    strong {
+        color: #ddd;
+    }
+
+    .task {
+        display: inline-block;
+        color: #ccc;
+        background-color: #000;
+        font-family: Menlo, Monaco, fixed-width;
+        font-size: 16px;
+        vertical-align: text-top;
+    }
+
+    .current {
+        color: #0f0;
+    }
+
+    .description {
+        padding: 5px;
+    }
+
+    .dependencies {
+        white-space: nowrap;
+    }
+
+    .even-depth:nth-child(even) > .description {
+        background-color: #222;
+    }
+
+    .even-depth:nth-child(odd) > .description {
+        background-color: #444;
+    }
+
+    .odd-depth:nth-child(even) > .description {
+        background-color: #004;
+    }
+
+    .odd-depth:nth-child(odd) > .description {
+        background-color: #008;
+    }
+
+    .finished {
+        color: #222;
+    }
+
+    .finished.even-depth:nth-child(even) > .description {
+        background-color: #fa0;
+    }
+
+    .finished.even-depth:nth-child(odd) > .description {
+        background-color: #d80;
+    }
+
+    .finished.odd-depth:nth-child(even) > .description {
+        background-color: #fd8;
+    }
+
+    .finished.odd-depth:nth-child(odd) > .description {
+        background-color: #fc0;
+    }
+
+  </style>
+
+  <script type="text/javascript" src="task.js"></script>
+  <script type="text/javascript" src="problem.js"></script>
+  <script type="text/javascript">
+    window.addEventListener('load', function() {
+        var problem = Problem()
+
+        var charN = 110
+        var charL = 108
+        var charF = 102
+        var charD = 100
+        var charS = 115
+        var charU = 117
+        window.addEventListener('keypress', function(event) {
+            if (event.charCode === charN) {
+                var text = prompt("Start a new subtask:")
+                if (!text) return
+                problem.addDependency(text)
+                render()
+            }
+            if (event.charCode === charL) {
+                var text = prompt("Create a reminder for later:")
+                if (!text) return
+                //var newTask = Task(text)
+                //
+                //if (currentTask.dependent) {
+                //    currentTask.dependent.dependOn(newTask)
+                //} else {
+                //    currentTask.dependOn(newTask)
+                //}
+
+                problem.addSibling(text)
+
+                render()
+            }
+            if (event.charCode === charF) {
+                // finish
+                problem.finishCurrentTask(text)
+
+                render()
+            }
+            if (event.charCode === charD) {
+                // defer
+                problem.deferCurrentTask(text)
+
+                //nextSibling = currentTask.next()
+                //
+                //var parent = currentTask.dependent
+                //if (parent && parent.dependent) {
+                //    parent.dependent.dependOn(currentTask)
+                //}
+                //
+                //if (nextSibling) {
+                //    makeCurrent(nextSibling)
+                //} else {
+                //    makeCurrent(parent)
+                //}
+
+                render()
+            }
+            if (event.charCode === charS) {
+                // skip
+                problem.skipCurrentTask()
+
+                render()
+            }
+            if (event.charCode === charU) {
+                // undo
+                problem.undo()
+
+                render()
+            }
+        })
+
+        function unfinished(tasks) {
+            return tasks.filter(function(task) {
+                return !task.finished
+            })
+        }
+
+        function render() {
+            document.getElementById("container").innerHTML = problem.rootTask().html()
+        }
+
+        function makeCurrent(task) {
+            if (currentTask) currentTask.current = false
+            task.current = true
+            currentTask = task
+        }
+
+        render()
+    })
+
+
+  </script>
+</head>
+<body>
+    <h1>The Cave</h1>
+    <p><strong>N</strong> starts a new subtask</p>
+    <p><strong>L</strong> creates a reminder for later</p>
+    <p><strong>F</strong> finishes the current task</p>
+    <p><strong>D</strong> defers it until later</p>
+    <p><strong>S</strong> skips to the next subtask</p>
+    <p><strong>U</strong> undoes</p>
+    <p>&nbsp;</p>
+    <p>The readme is <a href="//benchristel.github.io/the-cave">here</a>.</p>
+    <p>&nbsp;</p>
+    <div id="container">
+    </div>
+</body>
+</html>
