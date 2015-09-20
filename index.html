@@ -109,53 +109,23 @@
             if (event.charCode === charL) {
                 var text = prompt("Create a reminder for later:")
                 if (!text) return
-                //var newTask = Task(text)
-                //
-                //if (currentTask.dependent) {
-                //    currentTask.dependent.dependOn(newTask)
-                //} else {
-                //    currentTask.dependOn(newTask)
-                //}
-
                 problem.addSibling(text)
-
                 render()
             }
             if (event.charCode === charF) {
-                // finish
                 problem.finishCurrentTask(text)
-
                 render()
             }
             if (event.charCode === charD) {
-                // defer
                 problem.deferCurrentTask(text)
-
-                //nextSibling = currentTask.next()
-                //
-                //var parent = currentTask.dependent
-                //if (parent && parent.dependent) {
-                //    parent.dependent.dependOn(currentTask)
-                //}
-                //
-                //if (nextSibling) {
-                //    makeCurrent(nextSibling)
-                //} else {
-                //    makeCurrent(parent)
-                //}
-
                 render()
             }
             if (event.charCode === charS) {
-                // skip
                 problem.skipCurrentTask()
-
                 render()
             }
             if (event.charCode === charU) {
-                // undo
                 problem.undo()
-
                 render()
             }
         })
@@ -191,7 +161,7 @@
     <p><strong>S</strong> skips to the next subtask</p>
     <p><strong>U</strong> undoes</p>
     <p>&nbsp;</p>
-    <p>The readme is <a href="//benchristel.github.io/the-cave">here</a>.</p>
+    <p>The readme is <a href="//github.com/benchristel/the-cave">here</a>.</p>
     <p>&nbsp;</p>
     <div id="container">
     </div>
