@@ -233,6 +233,15 @@
         expect(problem.rootTask().dependencies[1].current).toEqual(true)
       })
 
+      it('can interrupt with a new task', function() {
+        var problem = Problem()
+        problem.addDependency('write an integration test')
+        problem.addDependency('install mysql')
+        problem.interrupt('fix the build')
+
+        expect(problem.rootTask().dependencies[1].current).toEqual(true)
+      })
+
       it('can undo an action', function() {
         var problem = Problem()
         problem.addDependency('write an integration test')

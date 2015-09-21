@@ -98,6 +98,7 @@
         var charF = 102
         var charD = 100
         var charS = 115
+        var charI = 105
         var charU = 117
         window.addEventListener('keypress', function(event) {
             if (event.charCode === charN) {
@@ -126,6 +127,12 @@
             }
             if (event.charCode === charU) {
                 problem.undo()
+                render()
+            }
+            if (event.charCode === charI) {
+                var text = prompt("Interrupt with an emergency:")
+                if (!text) return
+                problem.interrupt(text)
                 render()
             }
         })
@@ -158,7 +165,8 @@
     <p><strong>L</strong> creates a reminder for later</p>
     <p><strong>F</strong> finishes the current task</p>
     <p><strong>D</strong> defers it until later</p>
-    <p><strong>S</strong> skips to the next subtask</p>
+    <p><strong>S</strong> skips to the next task</p>
+    <p><strong>I</strong> interrupts the current task with a new top-level task</p>
     <p><strong>U</strong> undoes</p>
     <p>&nbsp;</p>
     <p>The readme is <a href="//github.com/benchristel/the-cave">here</a>.</p>

@@ -7,6 +7,7 @@ function Problem() {
         , finishCurrentTask: finishCurrentTask
         , deferCurrentTask: deferCurrentTask
         , skipCurrentTask: skipCurrentTask
+        , interrupt: interrupt
         , undo: undo
         , rootTask: rootTask
         }
@@ -36,6 +37,10 @@ function Problem() {
 
     function skipCurrentTask() {
         transformations.push(SkipTransformation())
+    }
+
+    function interrupt(description) {
+        transformations.push(InterruptTransformation(description))
     }
 
     function undo() {
@@ -154,6 +159,16 @@ function SkipTransformation() {
         if (leaves.length === 0) return
 
         state.makeCurrent(leaves[(index + 1) % leaves.length])
+    }
+}
+
+function InterruptTransformation(description) {
+    return { apply: apply }
+
+    function apply(state) {
+        var task = Task(description)
+        state.currentTask.root().dependOn(task)
+        state.makeCurrent(task)
     }
 }
 
