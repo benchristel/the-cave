@@ -61,7 +61,7 @@ function Transformations(transformations) {
         var currentState = CurrentState(treeRoot)
 
         transformations.forEach(function(transformation) {
-            transformation.apply(treeRoot, currentState)
+            transformation.apply(currentState)
         })
 
         return treeRoot
@@ -71,7 +71,7 @@ function Transformations(transformations) {
 function AddDependencyTransformation(description) {
     return { apply: apply }
 
-    function apply(treeRoot, state) {
+    function apply(state) {
         var newTask = Task(description)
         state.currentTask.dependOn(newTask)
         state.makeCurrent(newTask)
@@ -81,7 +81,7 @@ function AddDependencyTransformation(description) {
 function AddSiblingTransformation(description) {
     return { apply: apply }
 
-    function apply(treeRoot, state) {
+    function apply(state) {
         var newTask = Task(description)
 
         if (state.currentTask.dependent) {
@@ -95,7 +95,7 @@ function AddSiblingTransformation(description) {
 function FinishTransformation() {
     return { apply: apply }
 
-    function apply(treeRoot, state) {
+    function apply(state) {
         if (!state.currentTask.dependent) return
 
         state.currentTask.finished = true
@@ -113,7 +113,7 @@ function FinishTransformation() {
 function DeferTransformation() {
     return { apply: apply }
 
-    function apply(treeRoot, state) {
+    function apply(state) {
         var nextSibling = state.currentTask.next()
 
         var parent = state.currentTask.dependent
@@ -132,7 +132,7 @@ function DeferTransformation() {
 function SkipTransformation() {
     return { apply: apply }
 
-    function apply(t, state) {
+    function apply(state) {
         state.makeCurrent(state.currentTask.next())
     }
 }
