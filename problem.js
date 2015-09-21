@@ -12,10 +12,10 @@ function Problem() {
         }
 
     var rootTask = Task('(root)')
-    var transformations = []
+    var transformations = Transformations()
 
     function rootTask() {
-        return Transformations(transformations).apply(Task('(root)'))
+        return transformations.apply(Task('(root)'))
     }
 
     function addDependency(description) {
@@ -54,17 +54,31 @@ function Problem() {
 }
 
 
-function Transformations(transformations) {
-    return { apply: apply }
+function Transformations() {
+    var list = []
+
+    return {
+        apply: apply,
+        push: push,
+        pop: pop
+    }
 
     function apply(treeRoot) {
         var currentState = CurrentState(treeRoot)
 
-        transformations.forEach(function(transformation) {
+        list.forEach(function(transformation) {
             transformation.apply(currentState)
         })
 
         return treeRoot
+    }
+
+    function push(transformation) {
+        return list.push(transformation)
+    }
+
+    function pop(transformation) {
+        return list.pop(transformation)
     }
 }
 
