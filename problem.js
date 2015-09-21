@@ -64,7 +64,7 @@ function Transformations() {
     }
 
     function apply(treeRoot) {
-        var currentState = CurrentState(treeRoot)
+        var currentState = CurrentTaskController(treeRoot)
 
         list.forEach(function(transformation) {
             transformation.apply(currentState)
@@ -151,14 +151,14 @@ function SkipTransformation() {
     }
 }
 
-function CurrentState(beginning) {
+function CurrentTaskController(initialCurrentState) {
     var self = {
         makeCurrent: function(task) {
             if (self.currentTask) self.currentTask.current = false
             task.current = true
             self.currentTask = task
         },
-        currentTask: beginning
+        currentTask: initialCurrentState
     }
 
     return self
