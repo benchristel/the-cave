@@ -57,17 +57,6 @@
         expect(taskOne.dependencies.length).toBe(0)
       })
 
-      it('has siblings', function() {
-        var siblingOne = Task('one')
-        var siblingTwo = Task('two')
-        var parent = Task('parent')
-
-        parent.dependOn(siblingOne)
-        parent.dependOn(siblingTwo)
-
-        expect(siblingOne.siblings()).toEqual([siblingTwo])
-      })
-
       it('knows its next unfinished sibling', function() {
         var siblingOne = Task('one')
         var siblingTwo = Task('two')

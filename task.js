@@ -12,7 +12,6 @@ function Task(description) {
     , dependencies: dependencies
     , dependent: null
     , dependOn: dependOn
-    , siblings: siblings
     , next: next
     , html: html
     }
@@ -23,14 +22,6 @@ function Task(description) {
       remove(other, other.dependent.dependencies)
     }
     other.dependent = self
-  }
-
-  function siblings() {
-    if (!self.dependent) return []
-
-    return self.dependent.dependencies.filter(function(task) {
-      return task !== self
-    })
   }
 
   function next() {
