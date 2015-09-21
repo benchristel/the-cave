@@ -13,6 +13,8 @@ function Task(description) {
     , dependent: null
     , dependOn: dependOn
     , next: next
+    , root: root
+    , actionableDescendents: actionableDescendents
     , html: html
     }
 
@@ -34,6 +36,19 @@ function Task(description) {
     return sibs[i]
   }
 
+  function root() {
+    return self.dependent ? self.dependent.root() : self
+  }
+
+  function actionableDescendents() {
+    if (self.dependencies.every(isFinished)) return [self]
+    return self.dependencies.map(function (t) {
+        return t.actionableDescendents()
+    }).reduce(function(a, b) {
+        return a.concat(b)
+    })
+  }
+
   function html(depth) {
     if (!depth) depth = 1
 
@@ -51,6 +66,12 @@ function Task(description) {
       '</div><div class="dependencies">'+
       dependenciesAsHtml +
       '</div></div>'
+  }
+
+  // private //
+
+  function isFinished(task) {
+    return task.finished
   }
 
   return self

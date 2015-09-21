@@ -79,6 +79,29 @@
         expect(siblingThree.next()).toEqual(siblingThree)
       })
 
+      it('knows its root', function() {
+        var root = Task()
+        var intermediate = Task()
+        var task = Task()
+        root.dependOn(intermediate)
+        intermediate.dependOn(task)
+
+        expect(task.root()).toBe(root)
+      })
+
+      it('knows its decendents that have no unfinished descendents', function() {
+        var root = Task('root')
+        var intermediate = Task('intermediate')
+        var task = Task('task')
+        var task2 = Task('task2')
+        root.dependOn(intermediate)
+        root.dependOn(task2)
+        intermediate.dependOn(task)
+
+        expect(root.actionableDescendents()[0].description).toEqual('task')
+        expect(root.actionableDescendents()[1].description).toEqual('task2')
+      })
+
       it('has an html representation', function() {
         var task = Task('learn Haskell')
         expect(task.html()).toEqual('<div class="task odd-depth"><div class="description">learn Haskell</div><div class="dependencies"></div></div>')
@@ -193,6 +216,20 @@
 
         expect(problem.rootTask().dependencies.length).toEqual(2)
         expect(problem.rootTask().dependencies[0].current).toEqual(false)
+        expect(problem.rootTask().dependencies[1].current).toEqual(true)
+      })
+
+      it('can skip the current task', function() {
+        var problem = Problem()
+        problem.addDependency('write an integration test')
+        problem.addSibling('tell the Android team about the new API')
+        problem.addDependency('install mysql')
+
+        expect(problem.rootTask().dependencies[0].dependencies[0].current).toEqual(true)
+
+        problem.skipCurrentTask()
+
+        expect(problem.rootTask().dependencies[0].dependencies[0].current).toEqual(false)
         expect(problem.rootTask().dependencies[1].current).toEqual(true)
       })
 

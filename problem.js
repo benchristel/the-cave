@@ -147,7 +147,13 @@ function SkipTransformation() {
     return { apply: apply }
 
     function apply(state) {
-        state.makeCurrent(state.currentTask.next())
+        var leaves = state.currentTask.root().actionableDescendents()
+
+        var index = leaves.indexOf(state.currentTask)
+
+        if (leaves.length === 0) return
+
+        state.makeCurrent(leaves[(index + 1) % leaves.length])
     }
 }
 
