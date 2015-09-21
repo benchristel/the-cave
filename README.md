@@ -4,16 +4,12 @@ Programming is hard. One of the hard things about it is keeping track of all the
 
 There are basically two subproblems here: you want to keep track of a todo list and check off items one at a time, but in the course of doing an item you may discover a subproblem that needs its own todo list. A todo list is basically a queue, but when you have subproblems nested within each task, you need a stack to keep track of the nesting. A hybrid data structure is called for.
 
-The Cave is a tool that visually represents a dependency tree of tasks, so you don't have to keep it all in your head. The tree supports both stack-like and queue-like operations
+The Cave is a tool that visually represents a dependency tree of tasks, so you don't have to keep it all in your head. The tree supports both stack-like and queue-like operations.
 
-The current task has green text.
-
-In addition to the tree's structure, there is an indicator of which task you're working on right now, as well as an indication of which tasks are already done.
-
-There are five basic actions to manipulate the tree: **Now**, **Later**, **Finish**, **Defer**, and **Skip**.
+There are five basic actions to manipulate the tree: **Now**, **Later**, **Finish**, **Defer**, and **Skip**, activated with the keypresses `N`, `L`, `F`, `D`, and `S`. Actions are relative to the current task, which is distinguished in the UI by green text.
 
 * **Now**: Your current task is blocked by a subproblem. You need to solve that subproblem now. This adds a child to the current task node and makes the child node the new current task. This is basically like pushing a stack frame.
-* **Later**: You need to do something else once your current task is out of the way. Often this is refactoring or some other type of cleanup. This adds a sibling of the current task node, essentially enqueueing a todo item.
+* **Later**: You need to do something else once your current task is out of the way. Often this is refactoring or some other type of cleanup. This adds a sibling of the current task node, enqueueing a todo item.
 * **Finish**: This marks the current task as completed. If the task node has siblings that have not been completed, the next sibling becomes the current task. Otherwise, the parent node becomes the current task.
-* **Defer**: Sometimes you realize that you don't yet have everything you need to solve a particular problem, but you can keep going with other work in the meantime. Maybe you need to confer with teammates about an API design, or revisit how authentication will affect a particular feature. When that happens, you can defer your current task by pushing it up to become a sibling of its parent.
+* **Defer**: Sometimes you realize that you don't yet have everything you need to solve a particular problem, but you can keep going with other work in the meantime. Maybe you need to confer with teammates about an API design, or talk to the PM about how authentication will affect a particular feature. When that happens, you can defer your current task by pushing it up to become a sibling of its parent.
 * **Skip** lets you get to the next item on your todo list. This is good for when you add **Later** reminders in one order, but want to complete them in a different order.
